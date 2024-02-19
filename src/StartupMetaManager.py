@@ -155,7 +155,7 @@ class StartupMetaManager:
             return
 
         # 输入的是文件路径, 提取密码
-        file_path = Path(input_str)
+        file_path = Path(input_str.replace('"', '').strip())
         if not file_path.exists():
             raise Exception(f"文件不存在: {file_path}")
 

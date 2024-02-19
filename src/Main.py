@@ -99,3 +99,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # pyinstaller --onefile --icon=resource\icon.ico src\Main.py --name=GTAV战局锁工具 --clean
