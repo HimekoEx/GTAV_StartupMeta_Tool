@@ -4,28 +4,28 @@ from pathlib import Path
 from ConfigManager import ConfigManager
 
 # noinspection SpellCheckingInspection
-_BASE_XML = """<?xml version="1.0" encoding="utf-8"?>
+# source: https://github.com/Raitou/GTA-V-Public-Solo-Friend-Session/blob/main/startup.meta
+_BASE_XML = """<?xml version="1.0" encoding="UTF-8"?>
 <!--%PASSWORD%-->
-<CDataFileMgr__ContentsOfDataFileXml> 
-  <disabledFiles/>  
-  <includedXmlFiles itemType="CDataFileMgr__DataFileArray"/>  
-  <includedDataFiles/>  
-  <dataFiles itemType="CDataFileMgr__DataFile"> 
-    <Item> 
-      <filename>platform:/data/cdimages/scaleform_platform_pc.rpf</filename>  
-      <fileType>RPF_FILE</fileType> 
-    </Item>  
-    <Item> 
-      <filename>platform:/data/cdimages/scaleform_frontend.rpf</filename>  
-      <fileType>RPF_FILE_PRE_INSTALL</fileType> 
-    </Item> 
-  </dataFiles>  
-  <contentChangeSets itemType="CDataFileMgr__ContentChangeSet"/>  
-  <dataFiles itemType="CDataFileMgr__DataFile"/>  
-  <patchFiles/> 
-</CDataFileMgr__ContentsOfDataFileXml>
-<!--%PASSWORD%-->
-"""
+<CDataFileMgr__ContentsOfDataFileXml>
+	<disabledFiles />
+	<includedXmlFiles itemType="CDataFileMgr__DataFileArray" />
+	<includedDataFiles />
+	<dataFiles itemType="CDataFileMgr__DataFile">
+	  <Item>
+	   <filename>platform:/data/cdimages/scaleform_platform_pc.rpf</filename>
+	   <fileType>RPF_FILE</fileType>
+	  </Item>
+	  <Item>
+	   <filename>platform:/data/cdimages/scaleform_frontend.rpf</filename>
+	   <fileType>RPF_FILE_PRE_INSTALL</fileType>
+	  </Item>
+	 </dataFiles>
+	<contentChangeSets itemType="CDataFileMgr__ContentChangeSet" />
+	<dataFiles itemType="CDataFileMgr__DataFile" />
+	<patchFiles />
+</CDataFileMgr__ContentsOfDataFileXml>                     
+<!--%PASSWORD%-->"""
 
 
 # noinspection SpellCheckingInspection
