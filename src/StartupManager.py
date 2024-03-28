@@ -3,10 +3,10 @@ from pathlib import Path
 
 from ConfigManager import ConfigManager
 
-# noinspection SpellCheckingInspection
 # source: https://github.com/Raitou/GTA-V-Public-Solo-Friend-Session/blob/main/startup.meta
+# noinspection SpellCheckingInspection
 _BASE_XML = """<?xml version="1.0" encoding="UTF-8"?>
-<!--%PASSWORD%-->
+<!--%PASSWORD1%-->
 <CDataFileMgr__ContentsOfDataFileXml>
 	<disabledFiles />
 	<includedXmlFiles itemType="CDataFileMgr__DataFileArray" />
@@ -25,37 +25,37 @@ _BASE_XML = """<?xml version="1.0" encoding="UTF-8"?>
 	<dataFiles itemType="CDataFileMgr__DataFile" />
 	<patchFiles />
 </CDataFileMgr__ContentsOfDataFileXml>                     
-<!--%PASSWORD%-->"""
+<!--%PASSWORD2%-->"""
 
 
-# noinspection SpellCheckingInspection
-class StartupMetaManager:
+class StartupManager:
+
     def __init__(self):
         self.config_manager = ConfigManager()
 
     def get_install_folder(self) -> str:
         """
-        获取GTAV安装目录
+        获取GTAV安装路径
 
-        :return: GTAV安装目录
+        :return: GTAV安装路径
         """
-        return self.config_manager.get_str_value("GTAV", "InstallFolder")
+        return self.config_manager.get_str_value("GTAV_InstallFolder")
 
     def set_install_folder(self, install_folder: str):
         """
-        设置GTAV安装目录
+        设置GTAV安装路径
 
-        :param install_folder: GTAV安装目录
+        :param install_folder: GTAV安装路径
         :return:
         """
-        self.config_manager.set_str_value("GTAV", "InstallFolder", install_folder)
-        self.config_manager.save()
+        self.config_manager.set_str_value("GTAV_InstallFolder", install_folder)
+        self.config_manager.save_config()
 
-    def get_startup_meta_path(self) -> Path:
+    def get_startup_path(self) -> Path:
         """
-        获取startup.meta文件路径
+        获取`startup.meta`文件路径
 
-        :return: startup.meta文件路径
+        :return: `startup.meta`文件路径
         """
         install_folder = self.get_install_folder()
         if install_folder:
@@ -67,21 +67,23 @@ class StartupMetaManager:
 
     def write_startup_meta(self, nickname: str):
         """
-        写入startup.meta文件
+        写入`startup.meta`文件
 
         :param nickname: 启动项名称
         :return:
         """
-        startup_meta_path = self.get_startup_meta_path()
+        startup_meta_path = self.get_startup_path()
         if startup_meta_path is not None:
-            passwd = self.get_startup_meta().get(nickname)
-            if passwd is not None:
-                file_content = _BASE_XML.replace('%PASSWORD%', passwd)
+            passwd1, passwd2 = self.get_startup_meta().get(nickname)
+            if passwd1 and passwd2:
+                file_content = _BASE_XML \
+                    .replace('%PASSWORD1%', passwd1) \
+                    .replace('%PASSWORD2%', passwd2)
                 startup_meta_path.write_text(file_content, encoding='utf-8')
             else:
-                raise Exception(f"启动项不存在: [{nickname}]")
+                raise RuntimeError(f"战局锁不存在: [{nickname}]")
         else:
-            raise Exception("GTAV安装目录未设置")
+            raise RuntimeError("GTAV安装路径未设置")
 
     def delete_startup_meta_path(self):
         """
@@ -89,7 +91,7 @@ class StartupMetaManager:
 
         :return:
         """
-        startup_meta_path = self.get_startup_meta_path()
+        startup_meta_path = self.get_startup_path()
         if startup_meta_path is not None and startup_meta_path.exists():
             startup_meta_path.unlink()
 
@@ -101,6 +103,14 @@ class StartupMetaManager:
         """
         return self.config_manager.get_dict_value("StartupMeta", {})
 
+    def get_startup_list(self) -> list:
+        """
+        获取启动项列表
+
+        :return: 启动项列表
+        """
+        return list(self.get_startup_meta().keys())
+
     def set_startup_meta(self, startup_meta: dict):
         """
         设置启动项
@@ -109,18 +119,19 @@ class StartupMetaManager:
         :return:
         """
         self.config_manager.set_dict_value("StartupMeta", startup_meta)
-        self.config_manager.save()
+        self.config_manager.save_config()
 
-    def add_startup_meta(self, nickname: str, passwd: str):
+    def add_startup_meta(self, nickname: str, passwd1: str, passwd2: str):
         """
         添加启动项
 
         :param nickname: 启动项名称
-        :param passwd: 启动项密码
+        :param passwd1: 启动项密码1
+        :param passwd2: 启动项密码2
         :return:
         """
         startup_meta = self.get_startup_meta()
-        startup_meta[nickname] = passwd
+        startup_meta[nickname] = (passwd1, passwd2)
         self.set_startup_meta(startup_meta)
 
     def remove_startup_meta(self, nickname: str) -> dict:
@@ -131,38 +142,31 @@ class StartupMetaManager:
         :return: 启动项
         """
         startup_meta = self.get_startup_meta()
-        if nickname in startup_meta:
+        if nickname in startup_meta.keys():
             del startup_meta[nickname]
-            self.config_manager.remove_dict_value("StartupMeta", nickname)
-            self.config_manager.save()
+            self.set_startup_meta(startup_meta)
             return startup_meta
         else:
-            raise Exception(f"启动项不存在: [{nickname}]")
+            raise RuntimeError(f"战局锁不存在:\n[{nickname}]")
 
-    def paser_startup_meta_passwd(self, input_str: str, nickname: str):
+    @staticmethod
+    def paser_startup_file(path: str):
         """
-        解析输入的字符串, 并添加启动项
+        解析文件内容, 并添加启动项
 
-        :param input_str: 输入字符串
-        :param nickname: 启动项名称
+        :param path: 文件路径
         :return:
         """
-        if nickname in self.get_startup_meta():
-            raise Exception(f"启动项已存在: [{nickname}]")
-
-        if input_str.isdigit():  # 输入的是密码(纯数字?)
-            self.add_startup_meta(nickname, input_str)
-            return
 
         # 输入的是文件路径, 提取密码
-        file_path = Path(input_str.replace('"', '').strip())
+        file_path = Path(path.replace('"', '').strip())
         if not file_path.exists():
-            raise Exception(f"文件不存在: {file_path}")
+            raise RuntimeError(f"文件不存在:\n{file_path}")
 
         file_content = file_path.read_text(encoding='utf-8')
-        match = re.search(r'<!--(.*?)-->', file_content)
-        if match:
-            passwd = match.group(1)
-            self.add_startup_meta(nickname, passwd)
+        matches = re.findall(r'<!--(.*?)-->', file_content)
+        if matches is not None and len(matches) == 2:
+            passwd1, passwd2 = matches
+            return passwd1, passwd2
         else:
-            raise Exception(f"文件中未识别到密码: {file_path}")
+            raise RuntimeError(f"文件识别失败:\n{file_path}")
