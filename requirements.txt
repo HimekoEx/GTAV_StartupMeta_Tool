@@ -1,9 +1,6 @@
 cffi~=1.16.0
 cryptography~=42.0.5
-gitdb~=4.0.11
-GitPython~=3.1.42
 pycparser~=2.21
 PyQt6~=6.6.1
 PyQt6-Qt6~=6.6.2
 PyQt6-sip~=13.6.0
-smmap~=5.0.1

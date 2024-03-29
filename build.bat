@@ -4,7 +4,7 @@ REM 设置入口文件名和图标文件名
 set ENTRY_FILE=src\MainWindow.py
 set ICON_FILE=src\res\icon_512.ico
 set ADD_DATA=src\res:res
-set APP_NAME=GTAV战局锁工具
+set APP_NAME=GTAV_SMT
 
 REM 清理之前的构建结果
 rmdir /s /q dist
