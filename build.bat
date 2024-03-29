@@ -12,8 +12,11 @@ rmdir /s /q build
 del /f /q %APP_NAME%.spec
 del /f /q %APP_NAME%.exe
 
+REM 激活虚拟环境
+call venv\Scripts\activate.bat
+
 REM 执行PyInstaller命令
-pyinstaller --windowed --onefile --icon=%ICON_FILE% ^
+pyinstaller -F -w --onefile --icon=%ICON_FILE% ^
  --add-data=%ADD_DATA% %ENTRY_FILE% --name=%APP_NAME% --clean
 
 REM 移动可执行文件到根目录
