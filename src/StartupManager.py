@@ -65,7 +65,7 @@ class StartupManager:
         else:
             return None
 
-    def write_startup_meta(self, nickname: str):
+    def write_startup_meta_file(self, nickname: str):
         """
         写入`startup.meta`文件
 
@@ -85,7 +85,7 @@ class StartupManager:
         else:
             raise RuntimeError("GTAV安装路径未设置")
 
-    def delete_startup_meta_path(self):
+    def delete_startup_meta_file(self):
         """
         删除startup.meta文件
 

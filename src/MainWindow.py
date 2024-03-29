@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QDialog, QMe
 
 from DialogAddStartup import DialogAddStartup
 from StartupManager import StartupManager
+from src.AutoFindGTAVInstallFolder import AutoFindGTAVInstallFolder
 from ui.UI_MainWindow import Ui_MainWindow
 
 
@@ -61,8 +62,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.lab_game_path.setText('安装路径: ' + folder_path)
             return
 
-        # todo 自动查找GTAV安装路径
-        pass
+        # 获取steam版的GTAV安装路径
+        install_folder = AutoFindGTAVInstallFolder.get_steam_ver()
+        if install_folder:
+            self.manager.set_install_folder(install_folder)
+            self.lab_game_path.setText('安装路径: ' + install_folder)
+            return
+
+        QMessageBox.critical(self, '错误', '未找到GTAV安装路径')
 
     def game_path_set(self):
         """
@@ -91,7 +98,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         nickname = selected_items[0].text()
         try:
-            self.manager.write_startup_meta(nickname)
+            self.manager.write_startup_meta_file(nickname)
             QMessageBox.information(self, '提示', '战局锁已设置\n请重启GTAV')
         except RuntimeError as e:
             QMessageBox.critical(self, '错误', str(e))
@@ -104,7 +111,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         :return:
         """
-        self.manager.delete_startup_meta_path()
+        self.manager.delete_startup_meta_file()
         QMessageBox.information(self, '提示', '战局锁已删除')
 
     def startup_add(self):

@@ -153,6 +153,15 @@
          <height>191</height>
         </rect>
        </property>
+       <property name="toolTip">
+        <string>战局锁列表</string>
+       </property>
+       <property name="whatsThis">
+        <string/>
+       </property>
+       <property name="sortingEnabled">
+        <bool>false</bool>
+       </property>
       </widget>
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
@@ -167,14 +176,14 @@
         <item>
          <widget class="QPushButton" name="btn_set_startup">
           <property name="text">
-           <string>设置战局锁</string>
+           <string>安装战局锁</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="btn_unset_startup">
           <property name="text">
-           <string>取消战局锁</string>
+           <string>卸载战局锁</string>
           </property>
          </widget>
         </item>
@@ -244,6 +253,53 @@
        </property>
        <property name="text">
         <string>安装路径: 未设置</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab_about">
+     <attribute name="title">
+      <string>关于</string>
+     </attribute>
+     <widget class="QGroupBox" name="gb_about">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>50</y>
+        <width>361</width>
+        <height>191</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>软件信息</string>
+      </property>
+      <widget class="QLabel" name="lab_version">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>130</y>
+         <width>300</width>
+         <height>50</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>软件版本: x.x.x(xxxx)</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lab_about">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>39</y>
+         <width>300</width>
+         <height>80</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;基于PyQT6实现的, GTAV线上模式多战局锁切换工具&lt;/p&gt;&lt;p&gt;作者: Himeko&lt;/p&gt;&lt;p&gt;项目地址: &lt;a href=&quot;https://github.com/HimekoEx/GTAV_StartupMeta_Tool&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#007af4;&quot;&gt;GTAV_StartupMeta_Tool&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
        </property>
       </widget>
      </widget>
