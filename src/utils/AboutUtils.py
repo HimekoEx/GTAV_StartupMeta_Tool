@@ -33,4 +33,4 @@ class AboutUtils:
 
         :return: 静态版本号
         """
-        return 'v1.0.1'
+        return 'v1.2.0'
