@@ -7,7 +7,8 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog, QDialog, QMe
 
 from DialogAddStartup import DialogAddStartup
 from StartupManager import StartupManager
-from src.AutoFindGTAVInstallFolder import AutoFindGTAVInstallFolder
+from utils.AboutUtils import AboutUtils
+from utils.AutoFindGTAVInstallFolder import AutoFindGTAVInstallFolder
 from ui.UI_MainWindow import Ui_MainWindow
 
 
@@ -49,6 +50,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # 加载启动项
         self.update_startup_list()
+
+        # 加载版本信息
+        self.load_about_version()
 
     def game_path_auto_find(self):
         """
@@ -152,6 +156,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         self.list_startup.clear()
         self.list_startup.addItems(self.manager.get_startup_list())
+
+    def load_about_version(self):
+        tag = AboutUtils.get_static_version()
+        self.lab_version.setText(f'软件版本: {tag}')
 
 
 if __name__ == '__main__':
